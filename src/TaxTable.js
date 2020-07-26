@@ -3,12 +3,13 @@ import BootstrapTable from "react-bootstrap-table-next";
 
 class TaxTable extends React.Component {
   state = {
-    selected: [0, 1],
+    selected: [0],
     taxes: [],
     columns: [
       {
         dataField: "id",
         text: "",
+        hidden: true,
       },
       {
         dataField: "income",
@@ -52,25 +53,18 @@ class TaxTable extends React.Component {
 
   handleOnSelect = (row, isSelect) => {
     if (isSelect) {
-      this.setState(() => ({
-        selected: [...this.state.selected, row.id],
-      }));
+      if (this.state.selected.length <= 2) {
+        this.setState(() => ({
+          selected: [...this.state.selected, row.id],
+        }));
+      } else {
+        this.setState(() => ({
+          selected: this.state.selected,
+        }));
+      }
     } else {
       this.setState(() => ({
         selected: this.state.selected.filter((x) => x !== row.id),
-      }));
-    }
-  };
-
-  handleOnSelectAll = (isSelect, rows) => {
-    const ids = rows.map((r) => r.id);
-    if (isSelect) {
-      this.setState(() => ({
-        selected: ids,
-      }));
-    } else {
-      this.setState(() => ({
-        selected: [],
       }));
     }
   };
@@ -81,7 +75,7 @@ class TaxTable extends React.Component {
       clickToSelect: true,
       selected: this.state.selected,
       onSelect: this.handleOnSelect,
-      onSelectAll: this.handleOnSelectAll,
+      hideSelectAll: true,
     };
     return (
       <div>
