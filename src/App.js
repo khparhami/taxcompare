@@ -14,7 +14,9 @@ class App extends React.Component {
 
   handleClick = () => {
     console.log("clicked");
-    this.taxes.push(calculate(this.incomeInputRef.current.value));
+    let taxLine = calculate(this.incomeInputRef.current.value);
+    taxLine.id = this.taxes.length + 1;
+    this.taxes.push(taxLine);
     this.taxTableRef.current.refreshTaxes(this.taxes);
   };
 

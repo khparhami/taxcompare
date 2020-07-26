@@ -83,18 +83,15 @@ function calculate(income) {
   } else if (income <= constants.thirdLevel.threashold) {
     tax =
       constants.thirdLevel.previous_level_tax +
-      (income - constants.thirdLevel.previous_level_tax) *
-        constants.thirdLevel.rate;
+      (income - constants.secondLevel.threashold) * constants.thirdLevel.rate;
   } else if (income <= constants.forthLevel.threashold) {
     tax =
       constants.forthLevel.previous_level_tax +
-      (income - constants.forthLevel.previous_level_tax) *
-        constants.forthLevel.rate;
-  } else if (income <= constants.fifthLevel.threashold) {
+      (income - constants.thirdLevel.threashold) * constants.forthLevel.rate;
+  } else {
     tax =
       constants.fifthLevel.previous_level_tax +
-      (income - constants.fifthLevel.previous_level_tax) *
-        constants.fifthLevel.rate;
+      (income - constants.forthLevel.threashold) * constants.fifthLevel.rate;
   }
 
   const netIncome = calculateNetIncome(
@@ -107,10 +104,10 @@ function calculate(income) {
 
   const taxdetails = {
     income,
-    tax,
-    medicare_levy,
-    low_income_tax_offset,
-    low_mid_income_tax_offset,
+    tax: Math.round(tax),
+    medicare_levy: Math.round(medicare_levy),
+    low_income_tax_offset: Math.round(low_income_tax_offset),
+    low_mid_income_tax_offset: Math.round(low_mid_income_tax_offset),
     monthly_pay: Math.round(netIncome / 12),
     weekly_pay: Math.round(netIncome / 52),
   };

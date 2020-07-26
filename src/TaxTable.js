@@ -1,49 +1,96 @@
 import React from "react";
-import Table from "react-bootstrap/Table";
-import CheckBox from "react-bootstrap/FormCheckInput";
+import BootstrapTable from "react-bootstrap-table-next";
 
 class TaxTable extends React.Component {
   state = {
+    selected: [0, 1],
     taxes: [],
+    columns: [
+      {
+        dataField: "id",
+        text: "",
+      },
+      {
+        dataField: "income",
+        text: "Income",
+        sort: true,
+      },
+      {
+        dataField: "tax",
+        text: "Tax",
+        sort: true,
+      },
+      {
+        dataField: "medicare_levy",
+        text: "Medicare levy",
+        sort: true,
+      },
+      {
+        dataField: "low_income_tax_offset",
+        text: "Low Income Tax Offset",
+        sort: true,
+      },
+      {
+        dataField: "low_mid_income_tax_offset",
+        text: "Low Mid Income Tax Offset",
+        sort: true,
+      },
+      {
+        dataField: "monthly_pay",
+        text: "Monthly pay",
+        sort: true,
+      },
+      {
+        dataField: "weekly_pay",
+        text: "Weekly",
+        sort: true,
+      },
+    ],
   };
 
   refreshTaxes = (taxes) => this.setState({ taxes: taxes });
 
-  render() {
-    const renderTax = (taxline, index) => {
-      return (
-        <tr key={index} style={{ padding: "1px" }}>
-          <td>
-            <CheckBox></CheckBox>
-          </td>
-          <td>{taxline.income}</td>
-          <td>{taxline.tax}</td>
-          <td>{taxline.medicare_levy}</td>
-          <td>{taxline.low_income_tax_oofset}</td>
-          <td>{taxline.low_mid_income_tax_offset}</td>
-          <td>{taxline.monthly_pay}</td>
-          <td>{taxline.weekly_pay}</td>
-        </tr>
-      );
-    };
+  handleOnSelect = (row, isSelect) => {
+    if (isSelect) {
+      this.setState(() => ({
+        selected: [...this.state.selected, row.id],
+      }));
+    } else {
+      this.setState(() => ({
+        selected: this.state.selected.filter((x) => x !== row.id),
+      }));
+    }
+  };
 
+  handleOnSelectAll = (isSelect, rows) => {
+    const ids = rows.map((r) => r.id);
+    if (isSelect) {
+      this.setState(() => ({
+        selected: ids,
+      }));
+    } else {
+      this.setState(() => ({
+        selected: [],
+      }));
+    }
+  };
+
+  render() {
+    const selectRow = {
+      mode: "checkbox",
+      clickToSelect: true,
+      selected: this.state.selected,
+      onSelect: this.handleOnSelect,
+      onSelectAll: this.handleOnSelectAll,
+    };
     return (
       <div>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Income</th>
-              <th>Tax</th>
-              <th>Medicare levy</th>
-              <th>Low Income Tax Offset</th>
-              <th>Low Mid Income Tax Offset</th>
-              <th>Monthly pay</th>
-              <th>Weekly pay</th>
-            </tr>
-          </thead>
-          <tbody>{this.state.taxes.map(renderTax)}</tbody>
-        </Table>
+        <BootstrapTable
+          keyField="id"
+          data={this.state.taxes}
+          columns={this.state.columns}
+          selectRow={selectRow}
+        />
       </div>
     );
   }
