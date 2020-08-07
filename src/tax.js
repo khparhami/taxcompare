@@ -102,6 +102,10 @@ function calculate(income) {
     low_mid_income_tax_offset
   );
 
+  const total_tax =
+    tax + medicare_levy - low_income_tax_offset - low_mid_income_tax_offset;
+  const total_tax_percentage = (total_tax / income) * 100;
+
   const taxdetails = {
     income,
     tax: Math.round(tax),
@@ -110,6 +114,7 @@ function calculate(income) {
     low_mid_income_tax_offset: Math.round(low_mid_income_tax_offset),
     monthly_pay: Math.round(netIncome / 12),
     weekly_pay: Math.round(netIncome / 52),
+    total_tax_percentage: Math.round(total_tax_percentage),
   };
 
   return taxdetails;

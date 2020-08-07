@@ -17,6 +17,14 @@ class App extends React.Component {
     errorMessage: "",
   };
 
+  onChangeIncomeValidator = (e) => {
+    let income = e.target.value;
+
+    if (!Number(income)) {
+      return;
+    }
+  };
+
   handleValidation = () => {
     const income_value = this.incomeInputRef.current.value;
     const selected_financial_year = this.financialYearRef.current.value;
@@ -26,6 +34,10 @@ class App extends React.Component {
       return false;
     }
 
+    if (!Number(income_value) || income_value <= 0) {
+      this.setState({ errorMessage: "Income must be a positive number" });
+      return false;
+    }
     const row_already_added = this.taxes.filter(
       (tax) =>
         tax.income.toString() === income_value &&
@@ -62,8 +74,15 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <div className="row">
-          <div className="col-lg-6">
+        <div
+          style={{
+            width: "50%",
+            display: "block",
+            margin: "auto",
+            textAlign: "center",
+          }}
+        >
+          <div>
             <label htmlFor="income">Income</label>
             <input
               ref={this.incomeInputRef}
@@ -73,7 +92,11 @@ class App extends React.Component {
             />
           </div>
 
-          <div className="col-lg-6">
+          <div
+            style={{
+              paddingTop: "10px",
+            }}
+          >
             <label htmlFor="financial_year">Financial year</label>
             <select
               name="financial_year"
@@ -94,7 +117,7 @@ class App extends React.Component {
           </div>
           <div className="col-lg-12  padd-top">
             <button className="btn btn-success" onClick={this.handleClick}>
-              Add
+              Add to compare
             </button>
           </div>
         </div>

@@ -10,10 +10,9 @@ class TaxTable extends React.Component {
     diff: [],
     columns: [
       {
-        dataField: "id",
-        text: "",
-        hidden: true,
-        headerClasses: "header",
+        dataField: "total_tax_percentage",
+        text: "%",
+        sort: true,
       },
       {
         dataField: "income",
@@ -61,15 +60,28 @@ class TaxTable extends React.Component {
     ],
   };
 
+  numberWithCommas = (number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   format = (taxdetail) => {
     return {
-      income: `$${taxdetail.income}`,
-      tax: `$${taxdetail.tax}`,
-      medicare_levy: `$${taxdetail.medicare_levy}`,
-      low_income_tax_offset: `$${taxdetail.low_income_tax_offset}`,
-      low_mid_income_tax_offset: `$${taxdetail.low_mid_income_tax_offset}`,
-      monthly_pay: `$${taxdetail.monthly_pay}`,
-      weekly_pay: `$${taxdetail.weekly_pay}`,
+      //id: taxdetail.id,
+      financial_year: taxdetail.financial_year,
+      income: `$${this.numberWithCommas(taxdetail.income)}`,
+      tax: `$${this.numberWithCommas(taxdetail.tax)}`,
+      medicare_levy: `$${this.numberWithCommas(taxdetail.medicare_levy)}`,
+      low_income_tax_offset: `$${this.numberWithCommas(
+        taxdetail.low_income_tax_offset
+      )}`,
+      low_mid_income_tax_offset: `$${this.numberWithCommas(
+        taxdetail.low_mid_income_tax_offset
+      )}`,
+      monthly_pay: `$${this.numberWithCommas(taxdetail.monthly_pay)}`,
+      weekly_pay: `$${this.numberWithCommas(taxdetail.weekly_pay)}`,
+      total_tax_percentage: `$${this.numberWithCommas(
+        taxdetail.total_tax_percentage
+      )}`,
     };
   };
 
@@ -130,20 +142,27 @@ class TaxTable extends React.Component {
   };
 
   render() {
-    const selectRow = {
-      mode: "checkbox",
-      clickToSelect: true,
-      selected: this.state.selected,
-      onSelect: this.handleOnSelect,
-      hideSelectAll: true,
-    };
+    // const selectRow = {
+    //   mode: "checkbox",
+    //   clickToSelect: true,
+    //   selected: this.state.selected,
+    //   onSelect: this.handleOnSelect,
+    //   hideSelectAll: true,
+    // };
     return (
-      <div style={{ width: "80%", display: "block", margin: "auto" }}>
+      <div
+        style={{
+          width: "80%",
+          display: "block",
+          margin: "auto",
+          paddingTop: "10px",
+        }}
+      >
         <BootstrapTable
           keyField="id"
           data={this.state.formattedTaxes}
           columns={this.state.columns}
-          selectRow={selectRow}
+          //selectRow={selectRow}
         />
         {/* <BootstrapTable
           keyField="id"
