@@ -51,7 +51,7 @@ class App extends React.Component {
 
     if (this.taxes.length > 10) {
       this.setState({
-        errorMessage: "Opps sorry, you reached the maximum number of rows!s",
+        errorMessage: "Opps sorry, you reached the maximum number of rows!",
       });
       return false;
     }
