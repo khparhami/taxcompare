@@ -5,6 +5,7 @@ class TaxTable extends React.Component {
   state = {
     selected: [0],
     taxes: [],
+    formattedTaxes: [],
     selected_taxes: [{}],
     diff: [],
     columns: [
@@ -12,11 +13,13 @@ class TaxTable extends React.Component {
         dataField: "id",
         text: "",
         hidden: true,
+        headerClasses: "header",
       },
       {
         dataField: "income",
         text: "Income",
         sort: true,
+        headerStyle: { height: "20px" },
       },
       {
         dataField: "financial_year",
@@ -37,11 +40,13 @@ class TaxTable extends React.Component {
         dataField: "low_income_tax_offset",
         text: "Low Income Tax Offset",
         sort: true,
+        headerStyle: { fontSize: "9px" },
       },
       {
         dataField: "low_mid_income_tax_offset",
         text: "Low Mid Income Tax Offset",
         sort: true,
+        headerStyle: { fontSize: "9px" },
       },
       {
         dataField: "monthly_pay",
@@ -56,7 +61,25 @@ class TaxTable extends React.Component {
     ],
   };
 
-  refreshTaxes = (taxes) => this.setState({ taxes: taxes });
+  format = (taxdetail) => {
+    return {
+      income: `$${taxdetail.income}`,
+      tax: `$${taxdetail.tax}`,
+      medicare_levy: `$${taxdetail.medicare_levy}`,
+      low_income_tax_offset: `$${taxdetail.low_income_tax_offset}`,
+      low_mid_income_tax_offset: `$${taxdetail.low_mid_income_tax_offset}`,
+      monthly_pay: `$${taxdetail.monthly_pay}`,
+      weekly_pay: `$${taxdetail.weekly_pay}`,
+    };
+  };
+
+  formatTaxes = (taxes) => {
+    let forrmattedTaxes = taxes.map((t) => this.format(t));
+    return forrmattedTaxes;
+  };
+
+  refreshTaxes = (taxes) =>
+    this.setState({ formattedTaxes: this.formatTaxes(taxes) });
 
   compare = (current_row) => {
     const selected_tax_1 = current_row;
@@ -91,9 +114,9 @@ class TaxTable extends React.Component {
           selected: [...this.state.selected, row.id],
           selected_taxes: [...this.state.selected_taxes, row],
         }));
-        if (this.state.selected.length === 2) {
-          this.compare(row);
-        }
+        // if (this.state.selected.length === 2) {
+        //   this.compare(row);
+        // }
       } else {
         this.setState(() => ({
           selected: this.state.selected,
@@ -115,18 +138,18 @@ class TaxTable extends React.Component {
       hideSelectAll: true,
     };
     return (
-      <div>
+      <div style={{ width: "80%", display: "block", margin: "auto" }}>
         <BootstrapTable
           keyField="id"
-          data={this.state.taxes}
+          data={this.state.formattedTaxes}
           columns={this.state.columns}
           selectRow={selectRow}
         />
-        <BootstrapTable
+        {/* <BootstrapTable
           keyField="id"
           data={this.state.diff}
           columns={this.state.columns}
-        />
+        /> */}
       </div>
     );
   }

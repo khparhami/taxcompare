@@ -36,6 +36,14 @@ class App extends React.Component {
       this.setState({ errorMessage: "Income already added" });
       return false;
     }
+
+    if (this.taxes.length > 10) {
+      this.setState({
+        errorMessage: "Opps sorry, you reached the maximum number of rows!s",
+      });
+      return false;
+    }
+
     this.setState({ errorMessage: "" });
     return true;
   };
