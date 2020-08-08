@@ -4,15 +4,12 @@ import BootstrapTable from "react-bootstrap-table-next";
 class TaxTable extends React.Component {
   state = {
     selected: [0],
-    taxes: [],
     formattedTaxes: [],
-    selected_taxes: [{}],
-    diff: [],
     columns: [
       {
-        dataField: "total_tax_percentage",
-        text: "%",
-        sort: true,
+        dataField: "id",
+        text: "",
+        hidden: false,
       },
       {
         dataField: "income",
@@ -57,6 +54,11 @@ class TaxTable extends React.Component {
         text: "Weekly",
         sort: true,
       },
+      {
+        dataField: "total_tax_percentage",
+        text: "%",
+        sort: true,
+      },
     ],
   };
 
@@ -66,7 +68,7 @@ class TaxTable extends React.Component {
 
   format = (taxdetail) => {
     return {
-      //id: taxdetail.id,
+      id: taxdetail.id,
       financial_year: taxdetail.financial_year,
       income: `$${this.numberWithCommas(taxdetail.income)}`,
       tax: `$${this.numberWithCommas(taxdetail.tax)}`,
@@ -85,6 +87,13 @@ class TaxTable extends React.Component {
     };
   };
 
+  resetLineIds = (lines) => {
+    var counter = 1;
+    lines.forEach((line) => {
+      line.id = counter++;
+    });
+    return lines;
+  };
   formatTaxes = (taxes) => {
     let forrmattedTaxes = taxes.map((t) => this.format(t));
     return forrmattedTaxes;
@@ -93,47 +102,25 @@ class TaxTable extends React.Component {
   refreshTaxes = (taxes) =>
     this.setState({ formattedTaxes: this.formatTaxes(taxes) });
 
-  compare = (current_row) => {
-    const selected_tax_1 = current_row;
-    const selected_tax_2 = this.state.selected_taxes[1];
-    const difference = {
-      id: 1,
-      income: selected_tax_1.income - selected_tax_2.income,
-      financial_year: "",
-      tax: Math.round(selected_tax_1.tax - selected_tax_2.tax),
-      medicare_levy: Math.round(
-        selected_tax_1.medicare_levy - selected_tax_2.medicare_levy
-      ),
-      low_income_tax_offset: Math.round(
-        selected_tax_1.low_income_tax_offset -
-          selected_tax_2.low_income_tax_offset
-      ),
-      low_mid_income_tax_offset: Math.round(
-        selected_tax_1.low_mid_income_tax_offset -
-          selected_tax_2.low_mid_income_tax_offset
-      ),
-      monthly_pay: selected_tax_1.monthly_pay - selected_tax_2.monthly_pay,
-      weekly_pay: selected_tax_1.weekly_pay - selected_tax_2.weekly_pay,
-    };
-
-    this.setState({ diff: difference });
+  removeSelected = (taxes) => {
+    var formettedTaxes = this.state.formattedTaxes.filter(
+      (t) => !this.state.selected.includes(t.id)
+    );
+    var filteredTaxes = taxes.filter(
+      (t) => !this.state.selected.includes(t.id)
+    );
+    this.setState({
+      formattedTaxes: this.resetLineIds(formettedTaxes),
+      selected: [0],
+    });
+    return this.resetLineIds(filteredTaxes);
   };
 
   handleOnSelect = (row, isSelect) => {
     if (isSelect) {
-      if (this.state.selected.length <= 2) {
-        this.setState(() => ({
-          selected: [...this.state.selected, row.id],
-          selected_taxes: [...this.state.selected_taxes, row],
-        }));
-        // if (this.state.selected.length === 2) {
-        //   this.compare(row);
-        // }
-      } else {
-        this.setState(() => ({
-          selected: this.state.selected,
-        }));
-      }
+      this.setState(() => ({
+        selected: [...this.state.selected, row.id],
+      }));
     } else {
       this.setState(() => ({
         selected: this.state.selected.filter((x) => x !== row.id),
@@ -142,13 +129,13 @@ class TaxTable extends React.Component {
   };
 
   render() {
-    // const selectRow = {
-    //   mode: "checkbox",
-    //   clickToSelect: true,
-    //   selected: this.state.selected,
-    //   onSelect: this.handleOnSelect,
-    //   hideSelectAll: true,
-    // };
+    const selectRow = {
+      mode: "checkbox",
+      clickToSelect: true,
+      selected: this.state.selected,
+      onSelect: this.handleOnSelect,
+      hideSelectAll: true,
+    };
     return (
       <div
         style={{
@@ -162,7 +149,7 @@ class TaxTable extends React.Component {
           keyField="id"
           data={this.state.formattedTaxes}
           columns={this.state.columns}
-          //selectRow={selectRow}
+          selectRow={selectRow}
         />
         {/* <BootstrapTable
           keyField="id"

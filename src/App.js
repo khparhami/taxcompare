@@ -59,8 +59,11 @@ class App extends React.Component {
     this.setState({ errorMessage: "" });
     return true;
   };
+  handleRemoveClick = () => {
+    this.taxes = this.taxTableRef.current.removeSelected(this.taxes);
+  };
 
-  handleClick = () => {
+  handleAddClick = () => {
     if (!this.handleValidation()) {
       return;
     }
@@ -116,8 +119,14 @@ class App extends React.Component {
             {this.state.errorMessage}
           </div>
           <div className="col-lg-12  padd-top">
-            <button className="btn btn-success" onClick={this.handleClick}>
+            <button className="btn btn-success" onClick={this.handleAddClick}>
               Add to compare
+            </button>
+            <button
+              className="btn btn-success"
+              onClick={this.handleRemoveClick}
+            >
+              Remove
             </button>
           </div>
         </div>
