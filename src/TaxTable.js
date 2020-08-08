@@ -56,8 +56,9 @@ class TaxTable extends React.Component {
       },
       {
         dataField: "total_tax_percentage",
-        text: "Total Tax %",
+        text: "Tax Percentage",
         sort: true,
+        headerStyle: { fontSize: "10px" },
       },
     ],
   };
@@ -81,7 +82,7 @@ class TaxTable extends React.Component {
       )}`,
       monthly_pay: `$${this.numberWithCommas(taxdetail.monthly_pay)}`,
       weekly_pay: `$${this.numberWithCommas(taxdetail.weekly_pay)}`,
-      total_tax_percentage: `$${this.numberWithCommas(
+      total_tax_percentage: `%${this.numberWithCommas(
         taxdetail.total_tax_percentage
       )}`,
     };
@@ -144,11 +145,6 @@ class TaxTable extends React.Component {
           columns={this.state.columns}
           selectRow={selectRow}
         />
-        {/* <BootstrapTable
-          keyField="id"
-          data={this.state.diff}
-          columns={this.state.columns}
-        /> */}
       </div>
     );
   }
