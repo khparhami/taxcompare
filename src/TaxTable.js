@@ -9,7 +9,7 @@ class TaxTable extends React.Component {
       {
         dataField: "id",
         text: "",
-        hidden: false,
+        hidden: true,
       },
       {
         dataField: "income",
@@ -56,7 +56,7 @@ class TaxTable extends React.Component {
       },
       {
         dataField: "total_tax_percentage",
-        text: "%",
+        text: "Total Tax %",
         sort: true,
       },
     ],
@@ -137,14 +137,7 @@ class TaxTable extends React.Component {
       hideSelectAll: true,
     };
     return (
-      <div
-        style={{
-          width: "80%",
-          display: "block",
-          margin: "auto",
-          paddingTop: "10px",
-        }}
-      >
+      <div>
         <BootstrapTable
           keyField="id"
           data={this.state.formattedTaxes}

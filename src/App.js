@@ -79,12 +79,13 @@ class App extends React.Component {
       <div className="App">
         <div
           style={{
-            width: "50%",
+            width: "20%",
             display: "block",
             margin: "auto",
             textAlign: "center",
           }}
         >
+          <div></div>
           <div>
             <label htmlFor="income">Income</label>
             <input
@@ -118,19 +119,29 @@ class App extends React.Component {
           >
             {this.state.errorMessage}
           </div>
-          <div className="col-lg-12  padd-top">
-            <button className="btn btn-success" onClick={this.handleAddClick}>
-              Add to compare
-            </button>
-            <button
-              className="btn btn-success"
-              onClick={this.handleRemoveClick}
-            >
-              Remove
-            </button>
-          </div>
+          <button
+            className="btn btn-success"
+            style={{ float: "left" }}
+            onClick={this.handleAddClick}
+          >
+            Add to compare
+          </button>
+          <button
+            className="btn btn-success"
+            style={{ float: "right" }}
+            onClick={this.handleRemoveClick}
+          >
+            Remove
+          </button>
         </div>
-        <div>
+        <div
+          style={{
+            width: "80%",
+            display: "block",
+            margin: "auto",
+            paddingTop: "60px",
+          }}
+        >
           <TaxTable ref={this.taxTableRef} taxes={this.taxes} />
         </div>
       </div>
