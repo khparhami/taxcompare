@@ -1,4 +1,6 @@
-import * as constants from "./constants";
+import * as constClass from "./constants";
+
+let constants;
 
 function calculateNetIncome(
   income,
@@ -28,6 +30,9 @@ function calculateLowIncomOffset(income) {
 }
 
 function calculateMidIncomOffset(income) {
+  if (!constants.mid_income_offset) {
+    return 0;
+  }
   if (
     income <= constants.firstLevel.threashold ||
     income > constants.mid_income_offset.forth_threshold
@@ -64,7 +69,8 @@ function calculateMedicareLevy(income) {
   return 0;
 }
 
-function calculate(income) {
+function calculate(income, financial_year) {
+  constants = constClass.getRates(financial_year);
   income = parseInt(income);
   let tax = 0;
   let medicare_levy = 0;

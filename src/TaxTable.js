@@ -34,15 +34,13 @@ class TaxTable extends React.Component {
       },
       {
         dataField: "low_income_tax_offset",
-        text: "Low Income Tax Offset",
+        text: "LITO",
         sort: true,
-        headerStyle: { fontSize: "9px" },
       },
       {
         dataField: "low_mid_income_tax_offset",
-        text: "Low Mid Income Tax Offset",
+        text: "LMITO",
         sort: true,
-        headerStyle: { fontSize: "9px" },
       },
       {
         dataField: "monthly_pay",
@@ -138,14 +136,12 @@ class TaxTable extends React.Component {
       hideSelectAll: true,
     };
     return (
-      <div>
-        <BootstrapTable
-          keyField="id"
-          data={this.state.formattedTaxes}
-          columns={this.state.columns}
-          selectRow={selectRow}
-        />
-      </div>
+      <BootstrapTable
+        keyField="id"
+        data={this.state.formattedTaxes}
+        columns={this.state.columns}
+        selectRow={selectRow}
+      />
     );
   }
 }

@@ -1,43 +1,31 @@
-export const low_income_offset_max = 445;
-export const low_income_offset_reduction_rate = 0.015;
-export const low_income_offset_threshold = 66667;
-export const medicare_levy_rate = 0.02;
-export const medicare_levy_threshold = 22800;
+import * as constants_2019_2020 from "./2019-2020";
+import * as constants_2018_2019 from "./2018-2019";
+import * as constants_2017_2018 from "./2017-2018";
+import * as constants_2016_2017 from "./2016-2017";
+import * as constants_2015_2016 from "./2015-2016";
 
-export const mid_income_offset = {
-  max: 1080,
-  min: 225,
-  first_threshold: 37000,
-  second_threshold: 48000,
-  third_threshold: 90000,
-  forth_threshold: 126000,
-  increase_rate: 0.075,
-  decrease_rate: 0.03,
-};
+export const getRates = (financial_year) => {
+  let finantial_year_rates;
+  switch (financial_year) {
+    case "2019-2020":
+      finantial_year_rates = constants_2019_2020;
+      break;
+    case "2018-2019":
+      finantial_year_rates = constants_2018_2019;
+      break;
+    case "2017-2018":
+      finantial_year_rates = constants_2017_2018;
+      break;
+    case "2016-2017":
+      finantial_year_rates = constants_2016_2017;
+      break;
+    case "2015-2016":
+      finantial_year_rates = constants_2015_2016;
+      break;
+    default:
+      finantial_year_rates = constants_2019_2020;
+      break;
+  }
 
-export const firstLevel = {
-  threashold: 18200,
-  rate: 0,
-};
-
-export const secondLevel = {
-  threashold: 37000,
-  rate: 0.19,
-};
-
-export const thirdLevel = {
-  threashold: 90000,
-  rate: 0.325,
-  previous_level_tax: 3572,
-};
-
-export const forthLevel = {
-  threashold: 180000,
-  rate: 0.37,
-  previous_level_tax: 20797,
-};
-
-export const fifthLevel = {
-  rate: 0.45,
-  previous_level_tax: 54097,
+  return finantial_year_rates;
 };

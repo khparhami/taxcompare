@@ -67,7 +67,10 @@ class App extends React.Component {
     if (!this.handleValidation()) {
       return;
     }
-    let taxLine = calculate(this.incomeInputRef.current.value);
+    let taxLine = calculate(
+      this.incomeInputRef.current.value,
+      this.financialYearRef.current.value
+    );
     taxLine.id = this.taxes.length + 1;
     taxLine.financial_year = this.financialYearRef.current.value;
     this.taxes.push(taxLine);
@@ -77,7 +80,11 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+        <div>
+          <h1>Australian Tax Compare</h1>
+        </div>
         <div
+          id="container_top"
           style={{
             width: "20%",
             display: "block",
@@ -87,7 +94,7 @@ class App extends React.Component {
         >
           <div></div>
           <div>
-            <label htmlFor="income">Income</label>
+            <label htmlFor="income">Please enter your income</label>
             <input
               ref={this.incomeInputRef}
               autoComplete="off"
@@ -101,17 +108,17 @@ class App extends React.Component {
               paddingTop: "10px",
             }}
           >
-            <label htmlFor="financial_year">Financial year</label>
+            <label htmlFor="financial_year">Select a financial year</label>
             <select
               name="financial_year"
               className={"form-control"}
               ref={this.financialYearRef}
             >
-              <option>2019-2020</option>
-              <option>2018-2019</option>
-              <option>2017-2018</option>
-              <option>2016-2017</option>
-              <option>2015-2016</option>
+              <option value="2019-2020">2019-2020</option>
+              <option value="2018-2019">2018-2019</option>
+              <option value="2017-2018">2017-2018</option>
+              <option value="2016-2017">2016-2017</option>
+              <option value="2015-2016">2015-2016</option>
             </select>
           </div>
           <div
@@ -139,6 +146,7 @@ class App extends React.Component {
           </button>
         </div>
         <div
+          id="container_table"
           style={{
             width: "80%",
             display: "block",
